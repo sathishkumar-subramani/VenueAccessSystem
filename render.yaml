@@ -1,0 +1,44 @@
+# Render blueprint. Create the service from this file, then fill in the secrets
+# marked sync:false in the dashboard.
+services:
+  - type: web
+    name: venue-access-api
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: .
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @venue/api build
+    startCommand: node apps/api/dist/server.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      # Atlas is already a replica set, so transactions work with no extra setup.
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PASS_TOKEN_SECRET
+        sync: false   # must be base64 of 32 bytes: openssl rand -base64 32
+      - key: PLUGINS_ENABLED
+        value: gym,coworking,expo
+      - key: CORS_ORIGINS
+        sync: false   # your Vercel URL, comma-separated
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: BREVO_API_KEY
+        sync: false
+      - key: BREVO_SENDER_EMAIL
+        sync: false
+      - key: MSG91_AUTH_KEY
+        sync: false
+      - key: MSG91_OTP_TEMPLATE_ID
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false

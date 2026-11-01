@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.turbo/
+.expo/
+.env
+.env.local
+*.tsbuildinfo
+web-build/

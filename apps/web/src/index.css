@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+/*
+  The product is a transit pass for places: load value, show a ticket, get waved
+  through. The palette, the mono numerals and the torn-stub pass come from that
+  world rather than from a generic dashboard.
+*/
+@theme {
+  --color-ink: #101828;
+  --color-ink-soft: #475467;
+  --color-paper: #f6f5f1;
+  --color-card: #ffffff;
+  --color-rule: #e3e0d8;
+  --color-stamp: #1d4ed8;
+  --color-valid: #0f7b52;
+  --color-void: #b42318;
+
+  --font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The pass is a torn ticket stub, not a rounded rectangle. */
+.ticket-edge {
+  mask-image: radial-gradient(circle at 0 50%, transparent 9px, black 10px),
+    radial-gradient(circle at 100% 50%, transparent 9px, black 10px);
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
