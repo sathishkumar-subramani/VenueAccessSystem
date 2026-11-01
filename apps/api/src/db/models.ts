@@ -23,7 +23,14 @@ const userSchema = new Schema(
 );
 
 userSchema.index({ email: 1 }, { unique: true });
-userSchema.index({ googleSubjectId: 1 }, { unique: true, sparse: true });
+// A PARTIAL index, not a sparse one. `sparse` only skips documents where the
+// field is absent — but googleSubjectId defaults to null, so the field is
+// present on every password account and they all collide on null. The partial
+// filter restricts uniqueness to accounts that actually have a Google subject.
+userSchema.index(
+  { googleSubjectId: 1 },
+  { unique: true, partialFilterExpression: { googleSubjectId: { $type: "string" } } },
+);
 userSchema.index({ walletId: 1 }, { unique: true });
 
 export const UserModel = model("User", userSchema);
