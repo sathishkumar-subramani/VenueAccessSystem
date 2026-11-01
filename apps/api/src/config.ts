@@ -14,6 +14,14 @@ const schema = z.object({
   PASS_TOKEN_SECRET: z.string().min(32, "PASS_TOKEN_SECRET must be at least 32 characters"),
 
   PLUGINS_ENABLED: z.string().default("gym,coworking,expo"),
+
+  /**
+   * One-shot demo data at startup, for hosted environments with no shell.
+   * The seed is idempotent and only ever creates what is missing, but this
+   * should be switched back off once the data is there — production should not
+   * be writing demo rows on every restart.
+   */
+  SEED_ON_BOOT: z.enum(["true", "false"]).default("false"),
   PLUGIN_SETTINGS: z.string().default("{}"),
 
   CORS_ORIGINS: z.string().default("http://localhost:5173"),
